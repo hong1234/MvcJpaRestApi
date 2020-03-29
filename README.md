@@ -38,7 +38,7 @@ curl -i -X POST -H "Content-Type: application/json" -d '{"title":"Book2", "conte
 
 // add book with reviews
 
-curl -i -X POST -H "Content-Type: application/json" -d '{"title":"test333", "content":"test333","reviews": [{"name": "hong","email": "hong@gmail.com", "content": "good"}]}' http://localhost:8080/books
+curl -i -X POST -H "Content-Type: application/json" -d '{"title":"test333", "content":"test333","reviews": [{"name": "hong","email": "hong@gmail.com", "content": "good"}]}' http://localhost:8080/books -u admin:password
 
 // add review to bookId = 2
 
