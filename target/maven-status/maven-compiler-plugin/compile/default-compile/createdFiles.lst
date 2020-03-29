@@ -1,0 +1,13 @@
+com/hong/demo/domain/Book.class
+com/hong/demo/exceptions/ErrorDetails.class
+com/hong/demo/repository/ReviewRepository.class
+com/hong/demo/exceptions/ValidationException.class
+com/hong/demo/config/SpringSecurityConfig.class
+com/hong/demo/controller/BookController.class
+com/hong/demo/MvcJpaRestApiApplication.class
+com/hong/demo/validation/ValidationErrorBuilder.class
+com/hong/demo/domain/Review.class
+com/hong/demo/exceptions/ResourceNotFoundException.class
+com/hong/demo/validation/ValidationError.class
+com/hong/demo/exceptions/BookDeletionException.class
+com/hong/demo/repository/BookRepository.class
