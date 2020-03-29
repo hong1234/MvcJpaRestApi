@@ -53,8 +53,8 @@ curl -i -X PUT -H "Content-Type: application/json" -d '{"title":"Book1Updated", 
 
 // delete book Id = 15
 
-curl -X DELETE http://localhost:8080/books/15  -u admin:password | jq
+curl -X DELETE http://localhost:8080/books/15  -u admin:password
 
 // delete review id =16  of book id = 1
 
-curl -X DELETE http://localhost:8080/books/1/reviews/16  -u admin:password | jq
+curl -X DELETE http://localhost:8080/books/1/reviews/16  -u admin:password
