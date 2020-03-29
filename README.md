@@ -1,6 +1,4 @@
-Hong Le Nguyen
-hong66.lenguyen@gmail.com
-
+// Hong Le Nguyen
 
 REST API Demo using Spring5(Boot) MVC, JPA, Security, Test
 
