@@ -16,7 +16,7 @@ mvn test
 
 mvn spring-boot:run
 
-// client commande
+// client curl commande
 
 // get -------
 
