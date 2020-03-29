@@ -2,10 +2,13 @@ package com.hong.demo;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.lang.String;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -110,7 +113,8 @@ public class MvcJpaRestApiApplicationTests
 	{
 		int id = 2;
                 HttpEntity<String> request = new HttpEntity<String>(getHeaders());
-        	restTemplate.exchange(getRootUrl()+"/books/"+id, HttpMethod.DELETE, request, Book.class);
+        	ResponseEntity<String> response = restTemplate.exchange(getRootUrl()+"/books/"+id, HttpMethod.DELETE, request, String.class);
+                assertNull(response.getBody());
 	}
         
 }

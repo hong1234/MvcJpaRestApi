@@ -46,8 +46,6 @@ import com.hong.demo.exceptions.ErrorDetails;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import javax.persistence.EntityNotFoundException;
-import java.lang.IllegalArgumentException;
 
 
 @RestController
@@ -119,13 +117,10 @@ public class BookController
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<Book> deleteBook(@PathVariable("id") Integer id)
+    public ResponseEntity<?> deleteBook(@PathVariable("id") Integer id)
     {
-        Optional<Book> book = bookRepository.findById(id);
-	if(!book.isPresent())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         bookRepository.deleteById(id);
-        return ResponseEntity.noContent().build();      
+        return ResponseEntity.noContent().build();   
     }
 
     @PostMapping("/{id}/reviews")
@@ -148,24 +143,17 @@ public class BookController
     }
     
     @DeleteMapping("/{bookId}/reviews/{reviewId}")
-    public ResponseEntity<Review> deleteBookReview(@PathVariable("bookId") Integer bookId, @PathVariable("reviewId") Integer reviewId)
+    public ResponseEntity<?> deleteBookReview(@PathVariable("bookId") Integer bookId, @PathVariable("reviewId") Integer reviewId)
     {
-        Optional<Review> review = reviewRepository.findById(reviewId);
-	
-	if(!review.isPresent())
-	    return ResponseEntity.notFound().build(); 
-
-	reviewRepository.deleteById(review.get().getId());
-        return ResponseEntity.noContent().build();
+	reviewRepository.deleteById(reviewId);
+        return ResponseEntity.noContent().build();  
     }
     
-
     @ExceptionHandler
-    public ResponseEntity<?> handleException(Exception e) {
-        //log.error(exception.getMessage());
+    public ResponseEntity<?> handleException(RuntimeException e) {
         ErrorDetails errorDetails = new ErrorDetails(); 
         errorDetails.setErrorMessage(e.getMessage());
         return ResponseEntity.badRequest().body(errorDetails);
     }
-
+    
 }
