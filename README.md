@@ -20,6 +20,10 @@ mvn spring-boot:run
 
 // curl -s http://localhost:8080/books | jq
 
+// search books with title substring = "Spring"
+
+curl -s http://localhost:8080/books/search?title=Spring -u user:password | jq
+
 // get all books
 
 curl -s http://localhost:8080/books -u user:password | jq
