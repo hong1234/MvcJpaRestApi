@@ -46,7 +46,7 @@ curl -i -X POST -H "Content-Type: application/json" -d '{"name":"john", "email":
 
 // update book Id=1
 
-curl -i -X PUT -H "Content-Type: application/json" -d '{"title":"Book1Updated", "content":"book1"}' http://localhost:8080/books/1 -u admin:password
+curl -i -X PUT -H "Content-Type: application/json" -d '{"title":"Spring Intro Updated", "content":"book1 update"}' http://localhost:8080/books/1 -u admin:password
 
 
 // delete --------
