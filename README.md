@@ -32,11 +32,11 @@ curl -s http://localhost:8080/books/3/reviews -u user:password | jq
 
 // add book without reviews
 
-curl -i -X POST -H "Content-Type: application/json" -d '{"title":"Book2", "content":"book2"}' http://localhost:8080/books -u admin:password
+curl -i -X POST -H "Content-Type: application/json" -d '{"title":"Spring Intro", "content":"Spring in one day"}' http://localhost:8080/books -u admin:password
 
 // add book with reviews
 
-curl -i -X POST -H "Content-Type: application/json" -d '{"title":"test333", "content":"test333","reviews": [{"name": "hong","email": "hong@gmail.com", "content": "good"}]}' http://localhost:8080/books -u admin:password
+curl -i -X POST -H "Content-Type: application/json" -d '{"title":"My City", "content":"roman","reviews": [{"name": "hong","email": "hong@gmail.com", "content": "good"}]}' http://localhost:8080/books -u admin:password
 
 // add review to bookId = 2
 
@@ -51,10 +51,10 @@ curl -i -X PUT -H "Content-Type: application/json" -d '{"title":"Book1Updated", 
 
 // delete --------
 
-// delete book Id = 15
+// delete book Id = 3
 
-curl -X DELETE http://localhost:8080/books/15  -u admin:password
+curl -X DELETE http://localhost:8080/books/3  -u admin:password
 
-// delete review id =16  of book id = 1
+// delete review id =8  of book id = 1
 
-curl -X DELETE http://localhost:8080/books/1/reviews/16  -u admin:password
+curl -X DELETE http://localhost:8080/books/1/reviews/8  -u admin:password
