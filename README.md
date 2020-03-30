@@ -20,41 +20,45 @@ mvn spring-boot:run
 
 // curl -s http://localhost:8080/books | jq
 
+// search books with title substring = "Spring"
+
+curl -s http://localhost:8080/books/search?title=Spring -u user:password | jq
+
 // get all books
 
 curl -s http://localhost:8080/books -u user:password | jq
 
-// get reviews of book Id=3
+// get reviews of book Id=2
 
-curl -s http://localhost:8080/books/3/reviews -u user:password | jq
+curl -s http://localhost:8080/books/2/reviews -u user:password | jq
 
 // post -------
 
 // add book without reviews
 
-curl -i -X POST -H "Content-Type: application/json" -d '{"title":"Book2", "content":"book2"}' http://localhost:8080/books -u admin:password
+curl -i -X POST -H "Content-Type: application/json" -d '{"title":"Spring Intro", "content":"Spring in one day"}' http://localhost:8080/books -u admin:password
 
 // add book with reviews
 
-curl -i -X POST -H "Content-Type: application/json" -d '{"title":"test333", "content":"test333","reviews": [{"name": "hong","email": "hong@gmail.com", "content": "good"}]}' http://localhost:8080/books -u admin:password
+curl -i -X POST -H "Content-Type: application/json" -d '{"title":"My City", "content":"roman","reviews": [{"name": "hong","email": "hong@gmail.com", "content": "good"}]}' http://localhost:8080/books -u admin:password
 
 // add review to bookId = 2
 
-curl -i -X POST -H "Content-Type: application/json" -d '{"name":"john", "email": "john@gmail.com", "content":"Good Book"}' http://localhost:8080/books/2/reviews -u admin:password
+curl -i -X POST -H "Content-Type: application/json" -d '{"name":"john", "email": "john@gmail.com", "content":"Good Book"}' http://localhost:8080/books/2/reviews -u user:password
 
 // update ------
 
 // update book Id=1
 
-curl -i -X PUT -H "Content-Type: application/json" -d '{"title":"Book1Updated", "content":"book1"}' http://localhost:8080/books/1 -u admin:password
+curl -i -X PUT -H "Content-Type: application/json" -d '{"title":"Spring Intro Updated", "content":"book1 update"}' http://localhost:8080/books/1 -u admin:password
 
 
 // delete --------
 
-// delete book Id = 15
+// delete book Id = 3
 
-curl -X DELETE http://localhost:8080/books/15  -u admin:password | jq
+curl -X DELETE http://localhost:8080/books/3  -u admin:password
 
-// delete review id =16  of book id = 1
+// delete review id =8  of book id = 1
 
-curl -X DELETE http://localhost:8080/books/1/reviews/16  -u admin:password | jq
+curl -X DELETE http://localhost:8080/books/1/reviews/8  -u admin:password
