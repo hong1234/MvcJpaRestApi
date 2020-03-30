@@ -24,9 +24,9 @@ mvn spring-boot:run
 
 curl -s http://localhost:8080/books -u user:password | jq
 
-// get reviews of book Id=3
+// get reviews of book Id=2
 
-curl -s http://localhost:8080/books/3/reviews -u user:password | jq
+curl -s http://localhost:8080/books/2/reviews -u user:password | jq
 
 // post -------
 
@@ -40,7 +40,7 @@ curl -i -X POST -H "Content-Type: application/json" -d '{"title":"My City", "con
 
 // add review to bookId = 2
 
-curl -i -X POST -H "Content-Type: application/json" -d '{"name":"john", "email": "john@gmail.com", "content":"Good Book"}' http://localhost:8080/books/2/reviews -u admin:password
+curl -i -X POST -H "Content-Type: application/json" -d '{"name":"john", "email": "john@gmail.com", "content":"Good Book"}' http://localhost:8080/books/2/reviews -u user:password
 
 // update ------
 
