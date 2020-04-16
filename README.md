@@ -14,6 +14,9 @@ mvn test
 
 mvn spring-boot:run
 
+//swagger UI
+http://localhost:8000/swagger-ui.html
+
 // client curl commande
 
 // get -------
