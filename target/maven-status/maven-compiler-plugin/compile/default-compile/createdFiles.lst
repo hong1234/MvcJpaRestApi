@@ -10,4 +10,5 @@ com/hong/demo/domain/Review.class
 com/hong/demo/exceptions/ResourceNotFoundException.class
 com/hong/demo/validation/ValidationError.class
 com/hong/demo/exceptions/BookDeletionException.class
+com/hong/demo/config/SwaggerConfig.class
 com/hong/demo/repository/BookRepository.class

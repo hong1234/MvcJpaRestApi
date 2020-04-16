@@ -70,7 +70,7 @@ public class BookController
     @GetMapping("/{id}")
     public ResponseEntity<Book> getBookById(@PathVariable("id") Integer id)
     {
-	Optional<Book> book = bookRepository.findById(id);
+        Optional<Book> book = bookRepository.findById(id);
       
         if(book.isPresent())
          return ResponseEntity.ok(book.get());
@@ -93,7 +93,7 @@ public class BookController
     @PostMapping("")
     public ResponseEntity<?> createBook(@Valid @RequestBody Book book, Errors errors)
     {
-	if (errors.hasErrors()) {
+	    if (errors.hasErrors()) {
             return ResponseEntity.badRequest().body(ValidationErrorBuilder.fromBindingErrors(errors));
         }
 
@@ -111,12 +111,12 @@ public class BookController
 
         Optional<Book> result = bookRepository.findById(id);      
         
-	if(!result.isPresent())
-	    return ResponseEntity.notFound().build();
+	    if(!result.isPresent())
+	        return ResponseEntity.notFound().build();
 
         Book b = result.get();
-	b.setTitle(book.getTitle());
-	b.setContent(book.getContent());
+	    b.setTitle(book.getTitle());
+	    b.setContent(book.getContent());
 
         Book updatedBook = bookRepository.save(b);
 
@@ -139,11 +139,11 @@ public class BookController
             return ResponseEntity.badRequest().body(ValidationErrorBuilder.fromBindingErrors(errors));
         }
 
-	Optional<Book> book = bookRepository.findById(id);
+	    Optional<Book> book = bookRepository.findById(id);
         if(!book.isPresent())
             return ResponseEntity.notFound().build();
 
-	review.setBook(book.get());
+	    review.setBook(book.get());
         book.get().getReviews().add(review);
         Review savedReview = reviewRepository.save(review);
 
@@ -154,7 +154,7 @@ public class BookController
     @DeleteMapping("/{bookId}/reviews/{reviewId}")
     public ResponseEntity<?> deleteBookReview(@PathVariable("bookId") Integer bookId, @PathVariable("reviewId") Integer reviewId)
     {
-	reviewRepository.deleteById(reviewId);
+	    reviewRepository.deleteById(reviewId);
         return ResponseEntity.noContent().build();  
     }
     
