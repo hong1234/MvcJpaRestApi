@@ -1,6 +1,7 @@
 /home/hong/000-2020/DEMO2/MvcJpaRestApi/src/main/java/com/hong/demo/validation/ValidationErrorBuilder.java
 /home/hong/000-2020/DEMO2/MvcJpaRestApi/src/main/java/com/hong/demo/repository/BookRepository.java
 /home/hong/000-2020/DEMO2/MvcJpaRestApi/src/main/java/com/hong/demo/config/SpringSecurityConfig.java
+/home/hong/000-2020/DEMO2/MvcJpaRestApi/src/main/java/com/hong/demo/config/SwaggerConfig.java
 /home/hong/000-2020/DEMO2/MvcJpaRestApi/src/main/java/com/hong/demo/MvcJpaRestApiApplication.java
 /home/hong/000-2020/DEMO2/MvcJpaRestApi/src/main/java/com/hong/demo/exceptions/ValidationException.java
 /home/hong/000-2020/DEMO2/MvcJpaRestApi/src/main/java/com/hong/demo/exceptions/ErrorDetails.java

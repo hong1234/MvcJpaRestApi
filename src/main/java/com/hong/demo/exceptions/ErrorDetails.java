@@ -2,17 +2,19 @@ package com.hong.demo.exceptions;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.http.HttpStatus;
 
 public class ErrorDetails {
-	private String errorCode;
+
+	private HttpStatus errorCode;
     	private String errorMessage;
     	private String devErrorMessage;
     	private Map<String, Object> additionalData = new HashMap<>();
  
-	public String getErrorCode() {
+	public HttpStatus getErrorCode() {
 		return errorCode;
 	}
-	public void setErrorCode(String errorCode) {
+	public void setErrorCode(HttpStatus errorCode) {
 		this.errorCode = errorCode;
 	}
 	public String getErrorMessage() {

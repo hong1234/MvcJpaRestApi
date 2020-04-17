@@ -1,7 +1,5 @@
 package com.hong.demo.controller;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -13,149 +11,109 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity;
 
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
+import org.springframework.validation.FieldError;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
+
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.hong.demo.domain.Review;
 import com.hong.demo.domain.Book;
 import com.hong.demo.repository.ReviewRepository;
 import com.hong.demo.repository.BookRepository;
 
-import com.hong.demo.validation.ValidationError;
-import com.hong.demo.validation.ValidationErrorBuilder;
-
-import com.hong.demo.exceptions.BookDeletionException;
+import com.hong.demo.service.BookService;
 import com.hong.demo.exceptions.ResourceNotFoundException;
-
-import org.springframework.validation.Errors;
-import com.hong.demo.validation.ValidationError;
-import com.hong.demo.validation.ValidationErrorBuilder;
 import com.hong.demo.exceptions.ErrorDetails;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
 @RestController
-@RequestMapping(value="/books")
+@RequestMapping(value="/api/books")
 public class BookController
 {
     @Autowired
-    BookRepository bookRepository;
-    
-    @Autowired
-    ReviewRepository reviewRepository;
+    BookService bookService;
 
     @GetMapping("")
     public ResponseEntity<Iterable<Book>> listBooks()
     {
-	return ResponseEntity.ok(bookRepository.findAll());
+	    return ResponseEntity.ok(bookService.getAllBooks());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Book> getBookById(@PathVariable("id") Integer id)
+    @GetMapping("/{bookId}")
+    public ResponseEntity<?> getBookById(@PathVariable("bookId") Integer bookId)
     {
-        Optional<Book> book = bookRepository.findById(id);
-      
-        if(book.isPresent())
-         return ResponseEntity.ok(book.get());
-
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(bookService.getBookById(bookId));
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Iterable<Book>> getBookByTitle(@RequestParam String title)
+    public ResponseEntity<Iterable<Book>> searchBooksByTitle(@RequestParam String title)
     {
-        return ResponseEntity.ok(bookRepository.searchByTitle(title));
+        return ResponseEntity.ok(bookService.searchBooksByTitle(title));
     }
 
     @GetMapping("/{bookId}/reviews")
     public List<Review> getReviewsOfBook(@PathVariable("bookId") Integer bookId)
     {
-    	return reviewRepository.getReviewsOfBook(bookId);
+    	return bookService.getBookReviews(bookId);
     }
 
     @PostMapping("")
-    public ResponseEntity<?> createBook(@Valid @RequestBody Book book, Errors errors)
+    public ResponseEntity<?> createBook(@Valid @RequestBody Book book, BindingResult errors)
     {
-	    if (errors.hasErrors()) {
-            return ResponseEntity.badRequest().body(ValidationErrorBuilder.fromBindingErrors(errors));
-        }
-
-	Book savedBook = bookRepository.save(book);
+        if(errors.hasErrors())
+            return ResponseEntity.badRequest().body(createErrorString(errors));
+	    Book savedBook = bookService.storeBook(book);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedBook.getId()).toUri();
         return ResponseEntity.created(location).body(savedBook);
     }
     
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateBook(@PathVariable("id") Integer id, @Valid @RequestBody  Book book, Errors errors)
+    @PutMapping("/{bookId}")
+    public ResponseEntity<?> updateBook(@PathVariable("bookId") Integer bookId, @Valid @RequestBody  Book book, BindingResult errors)
     {
-    	if(errors.hasErrors()){
-            return ResponseEntity.badRequest().body(ValidationErrorBuilder.fromBindingErrors(errors));
-        }
-
-        Optional<Book> result = bookRepository.findById(id);      
-        
-	    if(!result.isPresent())
-	        return ResponseEntity.notFound().build();
-
-        Book b = result.get();
-	    b.setTitle(book.getTitle());
-	    b.setContent(book.getContent());
-
-        Book updatedBook = bookRepository.save(b);
-
+    	if(errors.hasErrors())
+            return ResponseEntity.badRequest().body(createErrorString(errors));
+        Book updatedBook = bookService.updateBook(bookId, book);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("").buildAndExpand(updatedBook.getId()).toUri();
         return ResponseEntity.created(location).body(updatedBook);
         
     }
-    
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteBook(@PathVariable("id") Integer id)
+
+    @PostMapping("/{bookId}/reviews")
+    public ResponseEntity<?> createBookReview(@PathVariable("bookId") Integer bookId, @Valid @RequestBody Review review, BindingResult errors)
     {
-        bookRepository.deleteById(id);
-        return ResponseEntity.noContent().build();   
-    }
-
-    @PostMapping("/{id}/reviews")
-    public ResponseEntity<?> createBookReview(@PathVariable("id") Integer id, @Valid @RequestBody Review review, Errors errors)
-    {
-        if(errors.hasErrors()){
-            return ResponseEntity.badRequest().body(ValidationErrorBuilder.fromBindingErrors(errors));
-        }
-
-	    Optional<Book> book = bookRepository.findById(id);
-        if(!book.isPresent())
-            return ResponseEntity.notFound().build();
-
-	    review.setBook(book.get());
-        book.get().getReviews().add(review);
-        Review savedReview = reviewRepository.save(review);
-
+        if(errors.hasErrors())
+	        return ResponseEntity.badRequest().body(createErrorString(errors));
+        Review savedReview = bookService.addReviewToBook(bookId, review);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedReview.getId()).toUri();
         return ResponseEntity.created(location).body(savedReview);  
     }
+
+    @DeleteMapping("/{bookId}")
+    public ResponseEntity<ErrorDetails> deleteBook(@PathVariable("bookId") Integer bookId)
+    {
+        return new ResponseEntity<ErrorDetails>(bookService.deleteBook(bookId), HttpStatus.OK);
+    }
     
     @DeleteMapping("/{bookId}/reviews/{reviewId}")
-    public ResponseEntity<?> deleteBookReview(@PathVariable("bookId") Integer bookId, @PathVariable("reviewId") Integer reviewId)
+    public ResponseEntity<ErrorDetails> deleteBookReview(@PathVariable("bookId") Integer bookId, @PathVariable("reviewId") Integer reviewId)
     {
-	    reviewRepository.deleteById(reviewId);
-        return ResponseEntity.noContent().build();  
+        return new ResponseEntity<ErrorDetails>(bookService.deleteReview(reviewId), HttpStatus.OK);
     }
     
     @ExceptionHandler
@@ -163,6 +121,25 @@ public class BookController
         ErrorDetails errorDetails = new ErrorDetails(); 
         errorDetails.setErrorMessage(e.getMessage());
         return ResponseEntity.badRequest().body(errorDetails);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<?> notFoundException(ResourceNotFoundException e){
+        ErrorDetails errorDetails = new ErrorDetails();
+        errorDetails.setErrorCode(HttpStatus.NOT_FOUND);
+        errorDetails.setErrorMessage(e.getMessage());
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    private String createErrorString(BindingResult result) {
+        StringBuilder sb =  new StringBuilder();
+        result.getAllErrors().forEach(error -> {
+            if(error instanceof FieldError) {
+                FieldError err= (FieldError) error;
+                sb.append("Field '").append(err.getField()).append("' value error: ").append(err.getDefaultMessage()).append("\n");
+            }
+        });
+        return sb.toString();
     }
     
 }
