@@ -62,7 +62,7 @@ public class MvcJpaRestApiApplicationTests
 	public void testGetAllBooks() 
 	{	
                 HttpEntity<String> request = new HttpEntity<String>(getHeaders());
-                ResponseEntity<Book[]> response = restTemplate.exchange(getRootUrl()+"/books", HttpMethod.GET, request, Book[].class);
+                ResponseEntity<Book[]> response = restTemplate.exchange(getRootUrl()+"/api/books", HttpMethod.GET, request, Book[].class);
                 List<Book> books = Arrays.asList(response.getBody());
         	assertNotNull(books);
 	}
@@ -72,7 +72,7 @@ public class MvcJpaRestApiApplicationTests
 	public void testGetBookById() 
 	{
 		HttpEntity<String> request = new HttpEntity<String>(getHeaders());
-                ResponseEntity<Book> response = restTemplate.exchange(getRootUrl()+"/books/1", HttpMethod.GET, request, Book.class);
+                ResponseEntity<Book> response = restTemplate.exchange(getRootUrl()+"/api/books/1", HttpMethod.GET, request, Book.class);
         	assertNotNull(response.getBody());
 	}
 
@@ -86,7 +86,7 @@ public class MvcJpaRestApiApplicationTests
 		book.setCreatedOn(new Date());
 		
                 HttpEntity<Object> request = new HttpEntity<Object>(book, getHeaders());
-                ResponseEntity<Book> bookResponse = restTemplate.exchange(getRootUrl()+"/books", HttpMethod.POST, request, Book.class);
+                ResponseEntity<Book> bookResponse = restTemplate.exchange(getRootUrl()+"/api/books", HttpMethod.POST, request, Book.class);
         	assertNotNull(bookResponse);
         	assertNotNull(bookResponse.getBody());	
 	}
@@ -103,7 +103,7 @@ public class MvcJpaRestApiApplicationTests
 		book.setCreatedOn(new Date());
 
                 HttpEntity<Object> request = new HttpEntity<Object>(book, getHeaders());
-		ResponseEntity<Book> response = restTemplate.exchange(getRootUrl()+"/books/"+id, HttpMethod.PUT, request, Book.class);
+		ResponseEntity<Book> response = restTemplate.exchange(getRootUrl()+"/api/books/"+id, HttpMethod.PUT, request, Book.class);
                 assertNotNull(response.getBody());
 	}
         
@@ -113,7 +113,7 @@ public class MvcJpaRestApiApplicationTests
 	{
 		int id = 2;
                 HttpEntity<String> request = new HttpEntity<String>(getHeaders());
-        	ResponseEntity<String> response = restTemplate.exchange(getRootUrl()+"/books/"+id, HttpMethod.DELETE, request, String.class);
+        	ResponseEntity<String> response = restTemplate.exchange(getRootUrl()+"/api/books/"+id, HttpMethod.DELETE, request, String.class);
                 assertNull(response.getBody());
 	}
         

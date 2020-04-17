@@ -110,8 +110,8 @@ public class BookController
         return new ResponseEntity<ErrorDetails>(bookService.deleteBook(bookId), HttpStatus.OK);
     }
     
-    @DeleteMapping("/{bookId}/reviews/{reviewId}")
-    public ResponseEntity<ErrorDetails> deleteBookReview(@PathVariable("bookId") Integer bookId, @PathVariable("reviewId") Integer reviewId)
+    @DeleteMapping("/reviews/{reviewId}")
+    public ResponseEntity<ErrorDetails> deleteBookReview(@PathVariable("reviewId") Integer reviewId)
     {
         return new ResponseEntity<ErrorDetails>(bookService.deleteReview(reviewId), HttpStatus.OK);
     }
