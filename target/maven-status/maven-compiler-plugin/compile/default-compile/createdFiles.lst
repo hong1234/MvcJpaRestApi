@@ -1,11 +1,10 @@
 com/hong/demo/domain/Book.class
 com/hong/demo/exceptions/ErrorDetails.class
+com/hong/demo/MvcJpaRestApiApplication.class
 com/hong/demo/service/BookService.class
 com/hong/demo/repository/ReviewRepository.class
-com/hong/demo/config/SpringSecurityConfig.class
-com/hong/demo/controller/BookController.class
-com/hong/demo/MvcJpaRestApiApplication.class
 com/hong/demo/domain/Review.class
 com/hong/demo/exceptions/ResourceNotFoundException.class
+com/hong/demo/controller/BookController.class
 com/hong/demo/config/SwaggerConfig.class
 com/hong/demo/repository/BookRepository.class
