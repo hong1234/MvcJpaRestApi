@@ -62,6 +62,6 @@ curl -i -X PUT -H "Content-Type: application/json" -d '{"title":"Spring Intro Up
 
 curl -X DELETE http://localhost:8000/api/books/3  -u admin:password
 
-// delete review id =8  of book id = 1
+// delete review id =8
 
-curl -X DELETE http://localhost:8000/api/books/1/reviews/8  -u admin:password
+curl -X DELETE http://localhost:8000/api/books/reviews/8  -u admin:password
