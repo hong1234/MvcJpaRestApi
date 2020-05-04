@@ -39,6 +39,7 @@ import com.hong.demo.repository.BookRepository;
 
 import com.hong.demo.service.BookService;
 import com.hong.demo.exceptions.ResourceNotFoundException;
+import com.hong.demo.exceptions.ValidationException;
 import com.hong.demo.exceptions.ErrorDetails;
 
 
@@ -77,8 +78,8 @@ public class BookController
     public ResponseEntity<?> createBook(@Valid @RequestBody Book book, BindingResult errors)
     {
         if(errors.hasErrors())
-            return ResponseEntity.badRequest().body(createErrorString(errors));
-	    Book savedBook = bookService.storeBook(book);
+            throw new ValidationException(createErrorString(errors));
+	Book savedBook = bookService.storeBook(book);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedBook.getId()).toUri();
         return ResponseEntity.created(location).body(savedBook);
     }
@@ -87,7 +88,7 @@ public class BookController
     public ResponseEntity<?> updateBook(@PathVariable("bookId") Integer bookId, @Valid @RequestBody  Book book, BindingResult errors)
     {
     	if(errors.hasErrors())
-            return ResponseEntity.badRequest().body(createErrorString(errors));
+            throw new ValidationException(createErrorString(errors));
         Book updatedBook = bookService.updateBook(bookId, book);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("").buildAndExpand(updatedBook.getId()).toUri();
         return ResponseEntity.created(location).body(updatedBook);
@@ -98,7 +99,7 @@ public class BookController
     public ResponseEntity<?> createBookReview(@PathVariable("bookId") Integer bookId, @Valid @RequestBody Review review, BindingResult errors)
     {
         if(errors.hasErrors())
-	        return ResponseEntity.badRequest().body(createErrorString(errors));
+	    throw new ValidationException(createErrorString(errors));
         Review savedReview = bookService.addReviewToBook(bookId, review);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedReview.getId()).toUri();
         return ResponseEntity.created(location).body(savedReview);  
@@ -117,17 +118,20 @@ public class BookController
     }
     
     @ExceptionHandler
-    public ResponseEntity<?> handleException(RuntimeException e) {
-        ErrorDetails errorDetails = new ErrorDetails(); 
-        errorDetails.setErrorMessage(e.getMessage());
-        return ResponseEntity.badRequest().body(errorDetails);
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<?> notFoundException(ResourceNotFoundException e){
+    public ResponseEntity<?> notfoundException(ResourceNotFoundException e) {
         ErrorDetails errorDetails = new ErrorDetails();
         errorDetails.setErrorCode(HttpStatus.NOT_FOUND);
         errorDetails.setErrorMessage(e.getMessage());
+        
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<?> bindingException(ValidationException e) {
+        ErrorDetails errorDetails = new ErrorDetails();
+        errorDetails.setErrorCode(HttpStatus.INTERNAL_SERVER_ERROR);
+        errorDetails.setErrorMessage(e.getMessage());
+        
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -136,7 +140,7 @@ public class BookController
         result.getAllErrors().forEach(error -> {
             if(error instanceof FieldError) {
                 FieldError err= (FieldError) error;
-                sb.append("Field '").append(err.getField()).append("' value error: ").append(err.getDefaultMessage()).append("\n");
+                sb.append(err.getField()).append(" ").append(err.getDefaultMessage());//.append("\n");
             }
         });
         return sb.toString();
