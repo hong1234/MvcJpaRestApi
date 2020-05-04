@@ -72,8 +72,8 @@ public class BookService {
         Book book = bookRepository.findById(bookId).orElseThrow(() -> new ResourceNotFoundException("Book with Id="+bookId+" not found"));
         bookRepository.deleteById(bookId);
         ErrorDetails errorDetails = new ErrorDetails();
-        errorDetails.setErrorCode(HttpStatus.OK);
-        errorDetails.setErrorMessage("Book Id="+bookId+" deleted");
+        errorDetails.setStatus(HttpStatus.OK);
+        errorDetails.setMessage("Book Id="+bookId+" deleted");
         return errorDetails;
     }
 
@@ -81,8 +81,8 @@ public class BookService {
         Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ResourceNotFoundException("Review with Id="+reviewId+" not found"));
         reviewRepository.deleteById(reviewId);
         ErrorDetails errorDetails = new ErrorDetails();
-        errorDetails.setErrorCode(HttpStatus.OK);
-        errorDetails.setErrorMessage("Review Id="+reviewId+"  deleted");
+        errorDetails.setStatus(HttpStatus.OK);
+        errorDetails.setMessage("Review Id="+reviewId+"  deleted");
         return errorDetails;
     }
 

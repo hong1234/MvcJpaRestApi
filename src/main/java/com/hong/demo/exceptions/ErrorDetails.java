@@ -6,29 +6,23 @@ import org.springframework.http.HttpStatus;
 
 public class ErrorDetails {
 
-	private HttpStatus errorCode;
-    	private String errorMessage;
-    	private String devErrorMessage;
+	private HttpStatus status;
+    	private String message;
     	private Map<String, Object> additionalData = new HashMap<>();
  
-	public HttpStatus getErrorCode() {
-		return errorCode;
+	public HttpStatus getStatus() {
+		return status;
 	}
-	public void setErrorCode(HttpStatus errorCode) {
-		this.errorCode = errorCode;
+	public void setStatus(HttpStatus status) {
+		this.status = status;
 	}
-	public String getErrorMessage() {
-		return errorMessage;
+	public String getMessage() {
+		return message;
 	}
-	public void setErrorMessage(String errorMessage) {
-		this.errorMessage = errorMessage;
+	public void setMessage(String message) {
+		this.message = message;
 	}
-	public String getDevErrorMessage() {
-		return devErrorMessage;
-	}
-	public void setDevErrorMessage(String devErrorMessage) {
-		this.devErrorMessage = devErrorMessage;
-	}
+	
 	public Map<String, Object> getAdditionalData() {
 		return additionalData;
 	}

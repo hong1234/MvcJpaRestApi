@@ -124,8 +124,8 @@ public class BookController
     @ExceptionHandler
     public ResponseEntity<?> notfoundException(ResourceNotFoundException e) {
         ErrorDetails errorDetails = new ErrorDetails();
-        errorDetails.setErrorCode(HttpStatus.NOT_FOUND);
-        errorDetails.setErrorMessage(e.getMessage());
+        errorDetails.setStatus(HttpStatus.NOT_FOUND);
+        errorDetails.setMessage(e.getMessage());
         
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
@@ -133,8 +133,8 @@ public class BookController
     @ExceptionHandler
     public ResponseEntity<?> bindingException(ValidationException e) {
         ErrorDetails errorDetails = new ErrorDetails();
-        errorDetails.setErrorCode(HttpStatus.INTERNAL_SERVER_ERROR);
-        errorDetails.setErrorMessage(e.getMessage());
+        errorDetails.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+        errorDetails.setMessage(e.getMessage());
         
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -144,7 +144,7 @@ public class BookController
         result.getAllErrors().forEach(error -> {
             if(error instanceof FieldError) {
                 FieldError err= (FieldError) error;
-                sb.append(err.getField()).append(" ").append(err.getDefaultMessage());//.append("\n");
+                sb.append(err.getField()).append(" ").append(err.getDefaultMessage());
             }
         });
         return sb.toString();
