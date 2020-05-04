@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -62,6 +63,7 @@ public class BookController
         return ResponseEntity.ok(bookService.getBookById(bookId));
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/search")
     public ResponseEntity<Iterable<Book>> searchBooksByTitle(@RequestParam String title)
     {
@@ -74,6 +76,7 @@ public class BookController
     	return bookService.getBookReviews(bookId);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("")
     public ResponseEntity<?> createBook(@Valid @RequestBody Book book, BindingResult errors)
     {
@@ -95,6 +98,7 @@ public class BookController
         
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/{bookId}/reviews")
     public ResponseEntity<?> createBookReview(@PathVariable("bookId") Integer bookId, @Valid @RequestBody Review review, BindingResult errors)
     {
